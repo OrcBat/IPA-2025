@@ -57,15 +57,15 @@ public class PlaylistController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePlaylist(@RequestBody PlaylistInfoDTO playlist, @PathVariable String id, Principal principal) {
+    @PutMapping
+    public ResponseEntity<Void> updatePlaylist(@RequestBody PlaylistInfoDTO playlist, Principal principal) {
         Optional<User> currentUser = userRepository.findByUsername(principal.getName());
-        playlistService.updatePlaylist(playlist, id, currentUser);
+        playlistService.updatePlaylist(playlist, currentUser);
         return new ResponseEntity<>(OK);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @PutMapping("/add/{songId}/{playlistId}")
+    @PutMapping("/{playlistId}/add-song/{songId}")
     public ResponseEntity<Void> addSongToPlaylist(@PathVariable String songId,
                                                   @PathVariable String playlistId,
                                                   Principal principal) {
@@ -75,7 +75,7 @@ public class PlaylistController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @PutMapping("/remove/{songId}/{playlistId}")
+    @PutMapping("/{playlistId}/remove-song/{songId}")
     public ResponseEntity<Void> removeSongFromPlaylist(@PathVariable String songId,
                                                        @PathVariable String playlistId,
                                                        Principal principal) {

@@ -40,13 +40,12 @@ public class SongController {
     public ResponseEntity<Void> createSong(@RequestBody SongDTO song) {
         songService.saveSong(song);
         return new ResponseEntity<>(OK);
-
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateSong(@RequestBody SongDTO song, @PathVariable String id) {
-        songService.updateSong(song, id);
+    @PutMapping
+    public ResponseEntity<Void> updateSong(@RequestBody SongDTO song) {
+        songService.updateSong(song);
         return new ResponseEntity<>(OK);
 
     }

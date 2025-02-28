@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class Mapper {
@@ -37,6 +38,7 @@ public class Mapper {
                 genreIds.add(genre.getName());
             }
             SongDTO songDTO = new SongDTO();
+            songDTO.setId(song.getId().toString());
             songDTO.setTitle(song.getTitle());
             songDTO.setReleaseDate(song.getReleaseDate());
             songDTO.setPlays(song.getPlays());
@@ -58,6 +60,7 @@ public class Mapper {
         }
 
         SongDTO songDTO = new SongDTO();
+        songDTO.setId(song.getId().toString());
         songDTO.setTitle(song.getTitle());
         songDTO.setReleaseDate(song.getReleaseDate());
         songDTO.setMood(song.getMood());
@@ -73,8 +76,8 @@ public class Mapper {
         List<Genre> songGenres = new ArrayList<>();
         Optional<Artist> artist = artistRepository.findArtistByName(songDTO.getArtist());
 
-        for (String genreId : songDTO.getGenres()) {
-            Optional<Genre> genre = genreRepository.findByName(genreId);
+        for (String genreName : songDTO.getGenres()) {
+            Optional<Genre> genre = genreRepository.findByName(genreName);
             genre.ifPresent(songGenres::add);
         }
 
@@ -100,6 +103,7 @@ public class Mapper {
                 songIds.add(song.getTitle());
             }
             ArtistDTO artistDTO = new ArtistDTO();
+            artistDTO.setId(artist.getId().toString());
             artistDTO.setName(artist.getName());
             artistDTO.setGenre(artist.getGenre().getName());
             artistDTO.setSongs(songIds);
@@ -117,13 +121,13 @@ public class Mapper {
         }
 
         ArtistDTO artistDTO = new ArtistDTO();
+        artistDTO.setId(artist.getId().toString());
         artistDTO.setName(artist.getName());
         artistDTO.setGenre(artist.getGenre().getName());
         artistDTO.setSongs(songIds);
 
         return artistDTO;
     }
-
 
     public Artist artistFromDTO(ArtistDTO artistDTO) {
         Optional<Genre> genre = genreRepository.findByName(artistDTO.getGenre());
@@ -152,6 +156,7 @@ public class Mapper {
                 artistNames.add(artist.getName());
             }
             GenreDTO genreDTO = new GenreDTO();
+            genreDTO.setId(genre.getId().toString());
             genreDTO.setName(genre.getName());
             genreDTO.setArtists(artistNames);
             genreDTOS.add(genreDTO);
@@ -168,6 +173,7 @@ public class Mapper {
         }
 
         GenreDTO genreDTO = new GenreDTO();
+        genreDTO.setId(genre.getId().toString());
         genreDTO.setName(genre.getName());
         genreDTO.setArtists(artistNames);
 
@@ -193,6 +199,7 @@ public class Mapper {
 
         for (Playlist playlist : playlists) {
             PlaylistDTO playlistDTO = new PlaylistDTO();
+            playlistDTO.setId(playlist.getId().toString());
             playlistDTO.setName(playlist.getName());
             playlistDTO.setDescription(playlist.getDescription());
             playlistDTO.setOwnerId(playlist.getUser().getId().toString());
@@ -206,6 +213,7 @@ public class Mapper {
 
     public PlaylistDTO playlistToDTO(Playlist playlist) {
         PlaylistDTO playlistDTO = new PlaylistDTO();
+        playlistDTO.setId(playlist.getId().toString());
         playlistDTO.setName(playlist.getName());
         playlistDTO.setDescription(playlist.getDescription());
         playlistDTO.setOwnerId(playlist.getUser().getId().toString());

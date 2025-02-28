@@ -24,6 +24,14 @@ VALUES ('10a7e7c1-5b74-4026-a71d-f0a12a2a788d', '15 Step', '2007-10-10', 'High',
        ('13e84c4d-8c1d-4976-9f14-7c38e5a6aef8', 'Kiss of Life', '1992-10-26', 'Low', 'Romantic', 199916655,
         '9e5c2adf-22c9-4f88-bb02-8c2a2f7f9a98');
 
+INSERT INTO playlist (id, name, description, user_id)
+VALUES ('7857dd4e-1a21-4f0f-ac87-d2c6f3f2900f', 'Chill', 'Songs to relax to', (SELECT id FROM app_user WHERE username='user')),
+       ('fc8ffeb9-af20-4b28-ab98-38998a5501a1', 'Workout', 'Songs for working out', (SELECT id FROM app_user WHERE username='admin'));
+
+INSERT INTO playlist_song (playlist_id, song_id)
+VALUES ('7857dd4e-1a21-4f0f-ac87-d2c6f3f2900f', '10a7e7c1-5b74-4026-a71d-f0a12a2a788d'),
+       ('fc8ffeb9-af20-4b28-ab98-38998a5501a1', '11d9df27-33fb-4c0c-a5b8-097676cd7487');
+
 INSERT INTO song_genre (song_id, genre_id)
 VALUES ('10a7e7c1-5b74-4026-a71d-f0a12a2a788d', '1b8a0cb6-4323-4829-98e2-2b0ebf10ec64'),
        ('11d9df27-33fb-4c0c-a5b8-097676cd7487', '2f8a45ea-77f7-4e7e-9317-7d4b8d4a1d0b'),

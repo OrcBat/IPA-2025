@@ -73,8 +73,8 @@ public class PlaylistService {
 
     }
 
-    public Playlist updatePlaylist(PlaylistInfoDTO playlist, String id, Optional<User> currentUser) {
-        Optional<Playlist> existingPlaylist = playlistRepository.findById(UUID.fromString(id));
+    public Playlist updatePlaylist(PlaylistInfoDTO playlist, Optional<User> currentUser) {
+        Optional<Playlist> existingPlaylist = playlistRepository.findById(UUID.fromString(playlist.getId()));
         if (existingPlaylist.isPresent() && currentUser.isPresent()) {
             if (existingPlaylist.get().getUser().getId().equals(currentUser.get().getId()) || currentUser.get().getRole().equals(Role.ADMIN)) {
                 existingPlaylist.get().setName(playlist.getName());
@@ -85,7 +85,7 @@ public class PlaylistService {
                 return null;
             }
         } else {
-            log.warn("Playlist with id {} not found", id);
+            log.warn("Playlist with id {} not found", playlist.getId());
             return null;
         }
     }

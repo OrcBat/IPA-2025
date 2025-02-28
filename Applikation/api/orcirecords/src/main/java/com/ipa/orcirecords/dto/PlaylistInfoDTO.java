@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlaylistInfoDTO {
+    String id;
     String name;
     String description;
 }

@@ -42,9 +42,9 @@ public class ArtistController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateArtist(@PathVariable String id, @RequestBody ArtistDTO artist) {
-        artistService.updateArtist(artist, id);
+    @PutMapping
+    public ResponseEntity<Void> updateArtist(@RequestBody ArtistDTO artist) {
+        artistService.updateArtist(artist);
         return new ResponseEntity<>(OK);
     }
 

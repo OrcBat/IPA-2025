@@ -46,12 +46,11 @@ public class ArtistService {
     }
 
     public Artist saveArtist(ArtistDTO artistDTO) {
-        Artist artist = mapper.artistFromDTO(artistDTO);
-        return artistRepository.save(artist);
+        return artistRepository.save(mapper.artistFromDTO(artistDTO));
     }
 
-    public Artist updateArtist(ArtistDTO artist, String id) {
-        Optional<Artist> existingArtist = artistRepository.findById(UUID.fromString(id));
+    public Artist updateArtist(ArtistDTO artist) {
+        Optional<Artist> existingArtist = artistRepository.findById(UUID.fromString(artist.getId()));
         List<Song> songs = new ArrayList<>();
         Optional<Genre> genre = genreRepository.findByName(artist.getGenre());
 
@@ -67,7 +66,7 @@ public class ArtistService {
             existingArtist.get().setSongs(songs);
             return artistRepository.save(existingArtist.get());
         } else {
-            log.warn("Artist with id {} not found", id);
+            log.warn("Artist with id {} not found", artist.getId());
             return null;
         }
     }

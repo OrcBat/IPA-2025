@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlaylistDTO {
+    String id;
     String name;
     String description;
     List<SongDTO> songs;

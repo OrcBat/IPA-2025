@@ -45,8 +45,8 @@ public class GenreService {
         return genreRepository.save(mapper.genreFromDTO(genreDTO));
     }
 
-    public Genre updateGenre(GenreDTO genreDTO, String id) {
-        Optional<Genre> existingGenre = genreRepository.findById(UUID.fromString(id));
+    public Genre updateGenre(GenreDTO genreDTO) {
+        Optional<Genre> existingGenre = genreRepository.findById(UUID.fromString(genreDTO.getId()));
         List<Artist> genreArtists = new ArrayList<>();
 
         for (String artistName : genreDTO.getArtists()) {
@@ -60,7 +60,7 @@ public class GenreService {
             existingGenre.get().setArtists(genreArtists);
             return genreRepository.save(existingGenre.get());
         } else {
-            log.warn("Genre with id {} not found", id);
+            log.warn("Genre with id {} not found", genreDTO);
             return null;
         }
     }

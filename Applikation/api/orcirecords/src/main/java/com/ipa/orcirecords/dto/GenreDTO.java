@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GenreDTO {
+    String id;
     String name;
     List<String> artists;
 }

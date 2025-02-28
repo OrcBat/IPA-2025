@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SongDTO {
+    String id;
     String title;
     Date releaseDate;
     String energy;
