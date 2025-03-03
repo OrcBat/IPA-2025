@@ -5,9 +5,9 @@ import com.ipa.orcirecords.dto.PlaylistInfoDTO;
 import com.ipa.orcirecords.model.user.User;
 import com.ipa.orcirecords.repository.UserRepository;
 import com.ipa.orcirecords.service.PlaylistService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -17,7 +17,7 @@ import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.OK;
 
-@Controller
+@RestController
 @RequestMapping("/api/playlist")
 public class PlaylistController {
 

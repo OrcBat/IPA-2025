@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import DashboardTemplate from "./components/templates/DashboardTemplate";
+import Songs from "./components/pages/Songs";
+import Playlists from "./components/pages/Playlists";
+import Login from "./components/pages/Login";
+import Dashboard from "./components/pages/Dashboard";
+import Artists from "./components/pages/Artists";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { CssBaseline } from "@mui/material";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <BrowserRouter>
+        <CssBaseline />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<DashboardTemplate />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="songs" element={<Songs />} />
+              <Route path="playlists" element={<Playlists />} />
+              <Route path="artists" element={<Artists />} />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

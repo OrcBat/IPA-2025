@@ -2,9 +2,9 @@ package com.ipa.orcirecords.controller;
 
 import com.ipa.orcirecords.dto.GenreDTO;
 import com.ipa.orcirecords.service.GenreService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.OK;
 
-@Controller
+@RestController
 @RequestMapping("/api/genre")
 public class GenreController {
 

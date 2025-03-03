@@ -61,3 +61,11 @@ CREATE TABLE song_genre
     CONSTRAINT fk_song FOREIGN KEY (song_id) REFERENCES song (id) ON DELETE CASCADE,
     CONSTRAINT fk_genre FOREIGN KEY (genre_id) REFERENCES genre (id) ON DELETE CASCADE
 );
+
+
+CREATE INDEX idx_user_username ON app_user(username);
+CREATE INDEX idx_song_title ON song(title);
+CREATE INDEX idx_genre_name ON genre(name);
+CREATE INDEX idx_artist_name ON artist(name);
+CREATE INDEX idx_playlist_user ON playlist(user_id);
+
