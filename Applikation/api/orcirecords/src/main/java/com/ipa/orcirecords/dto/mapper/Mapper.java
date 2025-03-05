@@ -4,7 +4,7 @@ import com.ipa.orcirecords.dto.*;
 import com.ipa.orcirecords.model.Artist;
 import com.ipa.orcirecords.model.Genre;
 import com.ipa.orcirecords.model.Playlist;
-import com.ipa.orcirecords.model.Song;
+import com.ipa.orcirecords.model.song.Song;
 import com.ipa.orcirecords.model.user.User;
 import com.ipa.orcirecords.repository.ArtistRepository;
 import com.ipa.orcirecords.repository.GenreRepository;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 public class Mapper {
@@ -105,7 +104,7 @@ public class Mapper {
             ArtistDTO artistDTO = new ArtistDTO();
             artistDTO.setId(artist.getId().toString());
             artistDTO.setName(artist.getName());
-            artistDTO.setGenre(artist.getGenre().getName());
+            artistDTO.setGenre(artist.getGenre() != null ? artist.getGenre().getName() : null);
             artistDTO.setSongs(songIds);
             artistDTOS.add(artistDTO);
         }
@@ -135,6 +134,11 @@ public class Mapper {
 
         for (String songTitle : artistDTO.getSongs()) {
             Optional<Song> song = songRepository.findSongByTitle(songTitle);
+
+            if (song.isPresent() && song.get().getArtist() != null) {
+                throw new IllegalArgumentException("Song '" + songTitle + "' is already assigned to another artist.");
+            }
+
             song.ifPresent(artistSongs::add);
         }
 
@@ -182,14 +186,17 @@ public class Mapper {
 
     public Genre genreFromDTO(GenreDTO genreDTO) {
         List<Artist> genreArtists = new ArrayList<>();
-        for (String artistName : genreDTO.getArtists()) {
-            Optional<Artist> artist = artistRepository.findArtistByName(artistName);
-            artist.ifPresent(genreArtists::add);
+        Genre genre = new Genre();
+
+        if (genreDTO.getArtists() != null) {
+            for (String artistName : genreDTO.getArtists()) {
+                Optional<Artist> artist = artistRepository.findArtistByName(artistName);
+                artist.ifPresent(genreArtists::add);
+            }
+            genre.setArtists(genreArtists);
         }
 
-        Genre genre = new Genre();
         genre.setName(genreDTO.getName());
-        genre.setArtists(genreArtists);
 
         return genre;
     }

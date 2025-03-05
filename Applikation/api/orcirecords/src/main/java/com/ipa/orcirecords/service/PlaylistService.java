@@ -4,7 +4,7 @@ import com.ipa.orcirecords.dto.PlaylistDTO;
 import com.ipa.orcirecords.dto.PlaylistInfoDTO;
 import com.ipa.orcirecords.dto.mapper.Mapper;
 import com.ipa.orcirecords.model.Playlist;
-import com.ipa.orcirecords.model.Song;
+import com.ipa.orcirecords.model.song.Song;
 import com.ipa.orcirecords.model.user.Role;
 import com.ipa.orcirecords.model.user.User;
 import com.ipa.orcirecords.repository.PlaylistRepository;

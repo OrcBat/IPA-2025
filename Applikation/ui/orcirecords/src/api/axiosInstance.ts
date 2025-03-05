@@ -10,13 +10,20 @@ const api = axios.create({
   withCredentials: true,
 });
 
+const savedToken = localStorage.getItem("authToken");
+if (savedToken) {
+  api.defaults.headers.common["Authorization"] = `Basic ${savedToken}`;
+}
+
 export const setAuthHeader = (username: string, password: string) => {
   const token = btoa(`${username}:${password}`);
   api.defaults.headers.common["Authorization"] = `Basic ${token}`;
+  localStorage.setItem("authToken", token);
 };
 
 export const clearAuthHeader = () => {
   delete api.defaults.headers.common["Authorization"];
+  localStorage.removeItem("authToken");
 };
 
 export default api;

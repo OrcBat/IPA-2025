@@ -3,11 +3,12 @@ import DashboardTemplate from "./components/templates/DashboardTemplate";
 import Songs from "./components/pages/Songs";
 import Playlists from "./components/pages/Playlists";
 import Login from "./components/pages/Login";
-import Dashboard from "./components/pages/Dashboard";
+import Dashboard from "./components/pages/Homepage";
 import Artists from "./components/pages/Artists";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { CssBaseline } from "@mui/material";
 import { AuthProvider } from "./context/AuthContext";
+import Genres from "./components/pages/Genres";
 
 function App() {
   return (
@@ -18,11 +19,13 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route element={<ProtectedRoute />}>
+            <Route path=""></Route>
             <Route path="/" element={<DashboardTemplate />}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="songs" element={<Songs />} />
               <Route path="playlists" element={<Playlists />} />
               <Route path="artists" element={<Artists />} />
+              <Route path="genres" element={<Genres />} />
             </Route>
           </Route>
         </Routes>

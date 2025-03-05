@@ -4,9 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 
 const ProtectedRoute: React.FC = () => {
   const { user } = useAuth();
-  console.log(user);
-
-  return user.username ? <Outlet /> : <Navigate to="/login" replace />;
+  return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

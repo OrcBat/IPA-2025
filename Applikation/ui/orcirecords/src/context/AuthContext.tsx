@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 import api, { setAuthHeader, clearAuthHeader } from "../api/axiosInstance";
 
 interface AuthContextType {
-  user: { username: string | null; roles: string[] };
+  user: { username: string | null; roles: string[] } | null;
   login: (user: string, password: string) => Promise<boolean>;
   logout: () => void;
 }
@@ -25,17 +25,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<{
     username: string | null;
     roles: string[];
-  }>(() => {
-    const savedUser = localStorage.getItem("user");
-    return savedUser ? JSON.parse(savedUser) : { username: null, roles: [] };
-  });
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true);
+      try {
+        const storedUser = localStorage.getItem("user");
+        const response = await api.get("/user/current");
+
+        if (response.status === 200) {
+          const userData = {
+            username: response.data.username,
+            roles: response.data.roles,
+          };
+
+          if (
+            !storedUser ||
+            JSON.parse(storedUser).username !== userData.username
+          ) {
+            localStorage.setItem("user", JSON.stringify(userData));
+          }
+          setUser(userData);
+        } else {
+          logout();
+        }
+      } catch (error) {
+        logout();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const login = async (
     username: string,
     password: string
   ): Promise<boolean> => {
     setAuthHeader(username, password);
-
     try {
       const response = await api.get("/user/current");
       if (response.status === 200) {
@@ -43,9 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           username: response.data.username,
           roles: response.data.roles,
         };
-
         localStorage.setItem("user", JSON.stringify(userData));
-
         setUser(userData);
         return true;
       }
@@ -60,8 +88,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout = () => {
     clearAuthHeader();
     localStorage.removeItem("user");
-    setUser({ username: null, roles: [] });
+    setUser(null);
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

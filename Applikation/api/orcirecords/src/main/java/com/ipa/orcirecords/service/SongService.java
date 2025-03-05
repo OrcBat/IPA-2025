@@ -2,17 +2,14 @@ package com.ipa.orcirecords.service;
 
 import com.ipa.orcirecords.dto.SongDTO;
 import com.ipa.orcirecords.dto.mapper.Mapper;
-import com.ipa.orcirecords.model.Song;
+import com.ipa.orcirecords.model.song.Song;
 import com.ipa.orcirecords.repository.SongRepository;
 import com.ipa.orcirecords.specification.SongSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service

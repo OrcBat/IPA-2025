@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { TextField, Button, Container, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const Login: React.FC = () => {
+const Login = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -23,11 +23,30 @@ const Login: React.FC = () => {
 
   return (
     <Container maxWidth="xs">
-      <Typography variant="h4" gutterBottom>Login</Typography>
-      <TextField fullWidth label="Username" margin="normal" onChange={(e) => setUsername(e.target.value)} />
-      <TextField fullWidth label="Password" type="password" margin="normal" onChange={(e) => setPassword(e.target.value)} />
+      <Typography variant="h4" gutterBottom mt={"20%"} align="center">
+        Login
+      </Typography>
+      <TextField
+        fullWidth
+        label="Username"
+        margin="normal"
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <TextField
+        fullWidth
+        label="Password"
+        type="password"
+        margin="normal"
+        onChange={(e) => setPassword(e.target.value)}
+      />
       {error && <Typography color="error">{error}</Typography>}
-      <Button variant="contained" color="primary" fullWidth onClick={handleLogin} sx={{ mt: 2 }}>
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        onClick={handleLogin}
+        sx={{ mt: 2 }}
+      >
         Login
       </Button>
     </Container>

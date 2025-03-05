@@ -1,5 +1,7 @@
 package com.ipa.orcirecords.dto;
 
+import com.ipa.orcirecords.model.song.Energy;
+import com.ipa.orcirecords.model.song.Mood;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +18,8 @@ public class SongDTO {
     String id;
     String title;
     Date releaseDate;
-    String energy;
-    String mood;
+    Energy energy;
+    Mood mood;
     int plays;
     String artist;
     List<String> genres;

@@ -5,9 +5,9 @@ import com.ipa.orcirecords.dto.PlaylistInfoDTO;
 import com.ipa.orcirecords.model.user.User;
 import com.ipa.orcirecords.repository.UserRepository;
 import com.ipa.orcirecords.service.PlaylistService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -29,16 +29,16 @@ public class PlaylistController {
         this.userRepository = userRepository;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<PlaylistDTO>> getAllPlaylists() {
         return new ResponseEntity<>(playlistService.getAllPlaylists(), OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/current")
-    public ResponseEntity<List<PlaylistDTO>> getPlaylistForCurrentUser(Principal principal) {
-        Optional<User> currentUser = userRepository.findByUsername(principal.getName());
+    public ResponseEntity<List<PlaylistDTO>> getPlaylistForCurrentUser(Authentication authentication) {
+        Optional<User> currentUser = userRepository.findByUsername(authentication.getName());
         return new ResponseEntity<>(playlistService.getPlaylistsForCurrentUser(currentUser), OK);
     }
 
@@ -50,16 +50,16 @@ public class PlaylistController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @PostMapping
-    public ResponseEntity<Void> createPlaylist(@RequestBody PlaylistInfoDTO playlist, Principal principal) {
-        Optional<User> currentUser = userRepository.findByUsername(principal.getName());
+    public ResponseEntity<Void> createPlaylist(@RequestBody PlaylistInfoDTO playlist, Authentication authentication) {
+        Optional<User> currentUser = userRepository.findByUsername(authentication.getName());
         playlistService.savePlaylist(playlist, currentUser);
         return new ResponseEntity<>(OK);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @PutMapping
-    public ResponseEntity<Void> updatePlaylist(@RequestBody PlaylistInfoDTO playlist, Principal principal) {
-        Optional<User> currentUser = userRepository.findByUsername(principal.getName());
+    public ResponseEntity<Void> updatePlaylist(@RequestBody PlaylistInfoDTO playlist, Authentication authentication) {
+        Optional<User> currentUser = userRepository.findByUsername(authentication.getName());
         playlistService.updatePlaylist(playlist, currentUser);
         return new ResponseEntity<>(OK);
     }
@@ -68,8 +68,8 @@ public class PlaylistController {
     @PutMapping("/{playlistId}/add-song/{songId}")
     public ResponseEntity<Void> addSongToPlaylist(@PathVariable String songId,
                                                   @PathVariable String playlistId,
-                                                  Principal principal) {
-        Optional<User> currentUser = userRepository.findByUsername(principal.getName());
+                                                  Authentication authentication) {
+        Optional<User> currentUser = userRepository.findByUsername(authentication.getName());
         playlistService.addSongToPlaylist(UUID.fromString(songId), UUID.fromString(playlistId), currentUser);
         return new ResponseEntity<>(OK);
     }
@@ -78,16 +78,16 @@ public class PlaylistController {
     @PutMapping("/{playlistId}/remove-song/{songId}")
     public ResponseEntity<Void> removeSongFromPlaylist(@PathVariable String songId,
                                                        @PathVariable String playlistId,
-                                                       Principal principal) {
-        Optional<User> currentUser = userRepository.findByUsername(principal.getName());
+                                                       Authentication authentication) {
+        Optional<User> currentUser = userRepository.findByUsername(authentication.getName());
         playlistService.removeSongFromPlaylist(UUID.fromString(songId), UUID.fromString(playlistId), currentUser);
         return new ResponseEntity<>(OK);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePlaylist(@PathVariable String id, Principal principal) {
-        Optional<User> currentUser = userRepository.findByUsername(principal.getName());
+    public ResponseEntity<Void> deletePlaylist(@PathVariable String id, Authentication authentication) {
+        Optional<User> currentUser = userRepository.findByUsername(authentication.getName());
         playlistService.deletePlaylist(UUID.fromString(id), currentUser);
         return new ResponseEntity<>(OK);
     }

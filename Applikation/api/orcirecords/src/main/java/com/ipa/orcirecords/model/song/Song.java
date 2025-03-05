@@ -1,5 +1,7 @@
-package com.ipa.orcirecords.model;
+package com.ipa.orcirecords.model.song;
 
+import com.ipa.orcirecords.model.Artist;
+import com.ipa.orcirecords.model.Genre;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,11 +31,13 @@ public class Song {
     @Column(nullable = false)
     private Date releaseDate;
 
-    @Column(nullable = false, length = 30)
-    private String energy;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Energy energy;
 
-    @Column(nullable = false, length = 30)
-    private String mood;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Mood mood;
 
     @Column(nullable = false)
     private int plays;

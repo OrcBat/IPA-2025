@@ -4,7 +4,7 @@ import com.ipa.orcirecords.dto.ArtistDTO;
 import com.ipa.orcirecords.dto.mapper.Mapper;
 import com.ipa.orcirecords.model.Artist;
 import com.ipa.orcirecords.model.Genre;
-import com.ipa.orcirecords.model.Song;
+import com.ipa.orcirecords.model.song.Song;
 import com.ipa.orcirecords.repository.ArtistRepository;
 import com.ipa.orcirecords.repository.GenreRepository;
 import com.ipa.orcirecords.repository.SongRepository;

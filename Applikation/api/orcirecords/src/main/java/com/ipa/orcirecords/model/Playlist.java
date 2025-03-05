@@ -1,5 +1,6 @@
 package com.ipa.orcirecords.model;
 
+import com.ipa.orcirecords.model.song.Song;
 import com.ipa.orcirecords.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

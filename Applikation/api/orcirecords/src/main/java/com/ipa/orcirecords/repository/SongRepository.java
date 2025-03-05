@@ -1,6 +1,6 @@
 package com.ipa.orcirecords.repository;
 
-import com.ipa.orcirecords.model.Song;
+import com.ipa.orcirecords.model.song.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

@@ -26,7 +26,7 @@ public class Genre {
     private String name;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "genre", cascade = CascadeType.PERSIST)
     private List<Artist> artists;
 }
 

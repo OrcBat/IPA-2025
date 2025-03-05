@@ -19,19 +19,19 @@ VALUES ('6c24f72d-8c1f-4cb9-930f-b5fddf6b8fc5', 'Radiohead', '1b8a0cb6-4323-4829
 INSERT INTO song (id, title, release_date, energy, mood, plays, artist_id)
 VALUES
     --Rock
-    ('10a7e7c1-5b74-4026-a71d-f0a12a2a788d', '15 Step', '2007-10-10', 'High', 'Experimental', 98501395,
+    ('10a7e7c1-5b74-4026-a71d-f0a12a2a788d', '15 Step', '2007-10-10', 'HIGH', 'EXCITING', 98501395,
      '6c24f72d-8c1f-4cb9-930f-b5fddf6b8fc5'),
 
     --Pop
-    ('11d9df27-33fb-4c0c-a5b8-097676cd7487', 'Beat it', '1982-11-30', 'High', 'Motivating', 1331375126,
+    ('11d9df27-33fb-4c0c-a5b8-097676cd7487', 'Beat it', '1982-11-30', 'HIGH', 'EXCITING', 1331375126,
      '7c14208c-304c-4c4e-bc96-0d0dd489b8da'),
 
     --Hip Hop
-    ('12b64b4f-7fd1-4a6b-8a45-6c0b2e0d3f13', 'Alright', '2015-03-15', 'Medium', 'Uplifting', 850550920,
+    ('12b64b4f-7fd1-4a6b-8a45-6c0b2e0d3f13', 'Alright', '2015-03-15', 'MEDIUM', 'HAPPY', 850550920,
      '8d6a5f5b-10c4-4d98-9c67-0422fddfa85a'),
 
     --R&B
-    ('13e84c4d-8c1d-4976-9f14-7c38e5a6aef8', 'Kiss of Life', '1992-10-26', 'Low', 'Romantic', 199916655,
+    ('13e84c4d-8c1d-4976-9f14-7c38e5a6aef8', 'Kiss of Life', '1992-10-26', 'LOW', 'ROMANTIC', 199916655,
      '9e5c2adf-22c9-4f88-bb02-8c2a2f7f9a98');
 
 INSERT INTO playlist (id, name, description, user_id)

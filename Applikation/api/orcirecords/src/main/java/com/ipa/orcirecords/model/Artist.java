@@ -2,6 +2,7 @@ package com.ipa.orcirecords.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ipa.orcirecords.model.song.Song;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class Artist {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "genre_id", nullable = false)
+    @JoinColumn(name = "genre_id")
     private Genre genre;
 
     @JsonManagedReference

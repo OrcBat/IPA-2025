@@ -19,8 +19,8 @@ CREATE TABLE artist
 (
     id       UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     name     VARCHAR(255) UNIQUE NOT NULL,
-    genre_id UUID                NOT NULL,
-    CONSTRAINT fk_genre FOREIGN KEY (genre_id) REFERENCES genre (id) ON DELETE NO ACTION
+    genre_id UUID,
+    CONSTRAINT fk_genre FOREIGN KEY (genre_id) REFERENCES genre (id) ON DELETE SET NULL
 );
 
 CREATE TABLE song
@@ -63,9 +63,9 @@ CREATE TABLE song_genre
 );
 
 
-CREATE INDEX idx_user_username ON app_user(username);
-CREATE INDEX idx_song_title ON song(title);
-CREATE INDEX idx_genre_name ON genre(name);
-CREATE INDEX idx_artist_name ON artist(name);
-CREATE INDEX idx_playlist_user ON playlist(user_id);
+CREATE INDEX idx_user_username ON app_user (username);
+CREATE INDEX idx_song_title ON song (title);
+CREATE INDEX idx_genre_name ON genre (name);
+CREATE INDEX idx_artist_name ON artist (name);
+CREATE INDEX idx_playlist_user ON playlist (user_id);
 
