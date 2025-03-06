@@ -32,10 +32,19 @@ const ArtistItem: React.FC<ArtistItemProps> = ({
       </AccordionSummary>
       <AccordionDetails>
         <Typography variant="body2">
-          <strong>Genre:</strong> {artist.genre}
+          <strong>Genre: </strong>
+          {artist.genre !== null ? (
+            artist.genre
+          ) : (
+            <List>
+              <Typography variant="body2" color="textSecondary">
+                No genre assigned
+              </Typography>
+            </List>
+          )}
         </Typography>
         <Typography variant="body2">
-          <strong>Songs:</strong>
+          <strong>Songs: </strong>
         </Typography>
         <List>
           {artist.songs.length > 0 ? (

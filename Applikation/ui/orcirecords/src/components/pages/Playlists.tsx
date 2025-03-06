@@ -10,7 +10,7 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
-import PlaylistList from "../organisms/PlaylistList";
+import PlaylistList from "../organisms/playlist/PlaylistList";
 import {
   getCurrentUserPlaylists,
   createPlaylist,
@@ -36,15 +36,10 @@ const Playlists = () => {
 
   const fetchPlaylists = async () => {
     setLoading(true);
-    try {
-      setPlaylists(
-        isAdmin ? await getPlaylists() : await getCurrentUserPlaylists()
-      );
-    } catch (error) {
-      console.error("Error fetching playlists: ", error);
-    } finally {
-      setLoading(false);
-    }
+    setPlaylists(
+      isAdmin ? await getPlaylists() : await getCurrentUserPlaylists()
+    );
+    setLoading(false);
   };
 
   const handleOpenDialog = (playlist: Playlist | null = null) => {
@@ -59,17 +54,13 @@ const Playlists = () => {
 
   const handleSavePlaylist = async () => {
     if (editPlaylist) {
-      try {
-        if (editPlaylist.id) {
-          await updatePlaylist(editPlaylist);
-        } else {
-          await createPlaylist(editPlaylist);
-        }
-        fetchPlaylists();
-        handleCloseDialog();
-      } catch (error) {
-        console.error("Error saving playlist: ", error);
+      if (editPlaylist.id) {
+        await updatePlaylist(editPlaylist);
+      } else {
+        await createPlaylist(editPlaylist);
       }
+      fetchPlaylists();
+      handleCloseDialog();
     }
   };
 
@@ -109,7 +100,7 @@ const Playlists = () => {
       )}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>
-          {editPlaylist ? "Edit Playlist" : "New Playlist"}
+          {editPlaylist?.id ? "Edit Playlist" : "New Playlist"}
         </DialogTitle>
         <DialogContent>
           <TextField

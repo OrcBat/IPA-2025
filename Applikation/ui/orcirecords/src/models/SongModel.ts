@@ -7,4 +7,5 @@ export interface Song {
   energy: string;
   releaseDate: string;
   plays: number;
+  matchPercentage: number;
 }

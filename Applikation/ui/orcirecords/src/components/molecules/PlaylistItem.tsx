@@ -13,6 +13,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Playlist } from "../../models/PlaylistModel";
+import { useAuth } from "../../context/AuthContext";
 
 interface PlaylistItemProps {
   playlist: Playlist;
@@ -28,6 +29,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
   onRemoveSong,
 }) => {
   const [expanded, setExpanded] = useState(false);
+  const { user } = useAuth();
 
   return (
     <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
@@ -41,8 +43,16 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
         </IconButton>
       </AccordionSummary>
       <AccordionDetails>
-        <strong>Description: </strong>
-        {playlist.description}
+        {user?.roles.includes("ROLE_ADMIN") && (
+          <Typography variant="body1">
+            <strong>Owner: </strong> {playlist.ownerName}
+          </Typography>
+        )}
+
+        <Typography variant="body1">
+          <strong>Description: </strong> {playlist.description}
+        </Typography>
+
         {playlist.songs.length > 0 ? (
           <List>
             <strong>Songs: </strong>

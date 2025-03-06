@@ -5,8 +5,8 @@ import { DatePicker as MUIDatePicker } from "@mui/x-date-pickers";
 
 const DatePicker = (props: {
   label: string;
-  value: any;
-  onChange: any;
+  value: Date | null;
+  onChange: (date: Date | null) => void;
   format: string;
 }) => {
   return (

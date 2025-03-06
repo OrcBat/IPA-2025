@@ -16,5 +16,5 @@ public class PlaylistDTO {
     String name;
     String description;
     List<SongDTO> songs;
-    String ownerId;
+    String ownerName;
 }

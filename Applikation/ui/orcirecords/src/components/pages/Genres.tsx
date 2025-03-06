@@ -9,6 +9,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
 } from "@mui/material";
 import {
   getGenres,
@@ -34,13 +35,8 @@ const Genres = () => {
 
   const fetchGenres = async () => {
     setLoading(true);
-    try {
-      setGenres(await getGenres());
-    } catch (error) {
-      console.error("Error loading genres:", error);
-    } finally {
-      setLoading(false);
-    }
+    setGenres(await getGenres());
+    setLoading(false);
   };
 
   const handleOpenDialog = (genre: Genre | null = null) => {
@@ -55,17 +51,13 @@ const Genres = () => {
 
   const handleSaveGenre = async () => {
     if (editGenre) {
-      try {
-        if (editGenre.id) {
-          await updateGenre(editGenre);
-        } else {
-          await createGenre({ name: editGenre.name });
-        }
-        fetchGenres();
-        handleCloseDialog();
-      } catch (error) {
-        console.error("Error saving genre: ", error);
+      if (editGenre.id) {
+        await updateGenre(editGenre);
+      } else {
+        await createGenre({ name: editGenre.name });
       }
+      fetchGenres();
+      handleCloseDialog();
     }
   };
 
@@ -105,15 +97,17 @@ const Genres = () => {
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>{editGenre?.id ? "Edit Genre" : "Add Genre"}</DialogTitle>
         <DialogContent>
-          <TextField
-            label="Name"
-            name="name"
-            fullWidth
-            value={editGenre?.name || ""}
-            onChange={(e) =>
-              setEditGenre({ ...editGenre!, name: e.target.value })
-            }
-          />
+          <FormControl fullWidth sx={{ marginTop: 1 }}>
+            <TextField
+              label="Name"
+              name="name"
+              fullWidth
+              value={editGenre?.name || ""}
+              onChange={(e) =>
+                setEditGenre({ ...editGenre!, name: e.target.value })
+              }
+            />
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="secondary">

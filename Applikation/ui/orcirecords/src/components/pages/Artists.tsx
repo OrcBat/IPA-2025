@@ -21,7 +21,6 @@ import {
   updateArtist,
   deleteArtist,
 } from "../../api/artistApi";
-import { getSongs } from "../../api/songApi";
 import { getGenres } from "../../api/genreApi";
 import { useAuth } from "../../context/AuthContext";
 import { Artist } from "../../models/ArtistModel";
@@ -119,16 +118,18 @@ const Artists = () => {
           {editArtist?.id ? "Edit Artist" : "Add Artist"}
         </DialogTitle>
         <DialogContent>
-          <TextField
-            label="Name"
-            name="name"
-            fullWidth
-            value={editArtist?.name || ""}
-            onChange={(e) =>
-              setEditArtist({ ...editArtist!, name: e.target.value })
-            }
-          />
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={{ marginTop: 1 }}>
+            <TextField
+              label="Name"
+              name="name"
+              fullWidth
+              value={editArtist?.name || ""}
+              onChange={(e) =>
+                setEditArtist({ ...editArtist!, name: e.target.value })
+              }
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ marginTop: 1 }}>
             <InputLabel>Genre</InputLabel>
             <Select
               label="Genre"

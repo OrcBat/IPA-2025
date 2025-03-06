@@ -1,23 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
-  TextField,
-  Button,
   Box,
   CircularProgress,
   Typography,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Select,
-  MenuItem,
-  Chip,
-  Checkbox,
-  ListItemText,
-  InputLabel,
-  FormControl,
   Tab,
   Tabs,
+  SelectChangeEvent,
 } from "@mui/material";
 import {
   getSongs,
@@ -31,14 +19,18 @@ import {
   getCurrentUserPlaylists,
 } from "../../api/playlistApi";
 import { getGenres } from "../../api/genreApi";
-import SongList from "../organisms/SongList";
+import SongList from "../organisms/song/SongList";
 import { useAuth } from "../../context/AuthContext";
 import { Song } from "../../models/SongModel";
 import { Playlist } from "../../models/PlaylistModel";
 import { Genre } from "../../models/GenreModel";
 import { getArtists } from "../../api/artistApi";
 import { Artist } from "../../models/ArtistModel";
-import DatePicker from "../atoms/DatePicker";
+import MatchesLegend from "../molecules/MatchesLegend";
+import SongDialog from "../organisms/song/SongDialog";
+import PlaylistDialog from "../organisms/song/PlaylistDialog";
+import GeneralSongSearch from "../organisms/song/GeneralSongSearch";
+import RecommendedSongSearch from "../organisms/song/RecommendedSongSearch";
 
 const Songs = () => {
   const { user } = useAuth();
@@ -65,7 +57,7 @@ const Songs = () => {
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [playlistDialogOpen, setPlaylistDialogOpen] = useState(false);
   const moodOptions = [
-    "-",
+    "",
     "Happy",
     "Sad",
     "Angry",
@@ -74,7 +66,7 @@ const Songs = () => {
     "Romantic",
     "Nostalgic",
   ];
-  const energyOptions = ["-", "High", "Medium", "Low"];
+  const energyOptions = ["", "High", "Medium", "Low"];
 
   useEffect(() => {
     fetchSongs(false);
@@ -136,11 +128,11 @@ const Songs = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
-  };
-
-  const handleDialogInputChange = (e: any) => {
+  const handleDialogInputChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | SelectChangeEvent<string | string[]>
+  ) => {
     if (!editSong) return;
     const { name, value } = e.target;
 
@@ -150,27 +142,9 @@ const Songs = () => {
     }));
   };
 
-  const handleGenreChange = (event: any) => {
-    const value = event.target.value;
-    setFilters({ ...filters, genre: value });
-  };
-
-  const handleMoodChange = (e: any) => {
-    const value = e.target.value;
-    setFilters({ ...filters, mood: value });
-  };
-
-  const handleEnergyChange = (e: any) => {
-    const value = e.target.value;
-    setFilters({ ...filters, energy: value });
-  };
-
   const handleDateChange = (newDate: Date | null) => {
-    const formattedDate = newDate ? newDate.toISOString().split("T")[0] : "";
-    setFilters({
-      ...filters,
-      releaseDate: formattedDate,
-    });
+    newDate!.setUTCDate(newDate!.getUTCDate());
+    let formattedDate = newDate ? newDate.toISOString() : "";
 
     if (editSong) {
       setEditSong({
@@ -180,12 +154,8 @@ const Songs = () => {
     }
   };
 
-  const handleSearch = () => {
-    fetchSongs(false);
-  };
-
-  const handleGetRecommendations = () => {
-    fetchSongs(true);
+  const handleSearch = (recommendations: boolean) => {
+    fetchSongs(recommendations);
   };
 
   const handleOpenDialog = (song: Song | null = null) => {
@@ -199,6 +169,7 @@ const Songs = () => {
         energy: "",
         releaseDate: "",
         plays: 0,
+        matchPercentage: 0,
       }
     );
     setOpenDialog(true);
@@ -211,17 +182,13 @@ const Songs = () => {
 
   const handleSaveSong = async () => {
     if (editSong) {
-      try {
-        if (editSong.id) {
-          await updateSong(editSong);
-        } else {
-          await createSong(editSong);
-        }
-        fetchSongs(false);
-        handleCloseDialog();
-      } catch (error) {
-        console.error("Error saving song: ", error);
+      if (editSong.id) {
+        await updateSong(editSong);
+      } else {
+        await createSong(editSong);
       }
+      fetchSongs(false);
+      handleCloseDialog();
     }
   };
 
@@ -240,7 +207,7 @@ const Songs = () => {
 
     try {
       await addSongToPlaylist(selectedSongId, selectedPlaylist);
-      alert("Song added to playlist successfully");
+      alert("Song successfully added to playlist ");
       setPlaylistDialogOpen(false);
       setSelectedSongId(null);
     } catch (error) {
@@ -256,6 +223,15 @@ const Songs = () => {
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
+    setFilters({
+      title: "",
+      artist: "",
+      genre: [],
+      mood: "",
+      energy: "",
+      releaseDate: "",
+      plays: "",
+    });
   };
 
   return (
@@ -268,333 +244,77 @@ const Songs = () => {
           <Tab label="Get Recommendations" />
         </Tabs>
 
+        <MatchesLegend />
+
         {tabIndex === 0 && (
           <>
-            <Box
-              sx={{
-                display: "flex",
-                gap: 2,
-                flexWrap: "wrap",
-                marginTop: 1,
-              }}
-            >
-              <TextField
-                label="Title"
-                name="title"
-                onChange={handleInputChange}
-              />
-              <TextField
-                label="Artist"
-                name="artist"
-                onChange={handleInputChange}
-              />
-              <FormControl sx={{ marginBottom: 2 }}>
-                <DatePicker
-                  label="Release Date"
-                  value={editSong?.releaseDate || null}
-                  onChange={handleDateChange}
-                  format="yyyy-dd-MM"
-                ></DatePicker>
-              </FormControl>
-
-              <TextField
-                label="Plays"
-                name="plays"
-                onChange={handleInputChange}
-                type="number"
-              />
-            </Box>
-
-            <Button variant="contained" onClick={handleSearch}>
-              Search
-            </Button>
-
+            <GeneralSongSearch
+              filters={filters}
+              setFilters={setFilters}
+              handleSearch={handleSearch}
+              editSong={editSong}
+            />
             {loading ? (
               <CircularProgress />
             ) : (
-              <Box sx={{ position: "relative" }}>
-                {isAdmin && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleOpenDialog()}
-                    sx={{ position: "absolute", top: -50, right: 0 }}
-                  >
-                    Add Song
-                  </Button>
-                )}
-                <SongList
-                  songs={songs}
-                  onEdit={handleOpenDialog}
-                  onDelete={handleDeleteSong}
-                  onAddToPlaylist={handleAddToPlaylistClick}
-                  isAdmin={isAdmin}
-                />
-              </Box>
+              <SongList
+                songs={songs}
+                onEdit={handleOpenDialog}
+                onDelete={handleDeleteSong}
+                onAddToPlaylist={handleAddToPlaylistClick}
+                handleOpenDialog={handleOpenDialog}
+                isAdmin={isAdmin}
+              />
             )}
           </>
         )}
 
         {tabIndex === 1 && (
           <>
-            <Box
-              sx={{
-                display: "flex",
-                gap: 2,
-                flexWrap: "wrap",
-                marginBottom: 2,
-                marginTop: 1,
-              }}
-            >
-              <FormControl fullWidth sx={{ maxWidth: 200 }}>
-                <InputLabel>Genre</InputLabel>
-                <Select
-                  label="Genre"
-                  multiple
-                  value={filters.genre}
-                  onChange={handleGenreChange}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                      {(selected as string[]).map((value) => {
-                        const genre = genres.find((g) => g.name === value);
-                        return genre ? (
-                          <Chip
-                            key={genre.name}
-                            label={genre.name}
-                            sx={{ margin: 0.5 }}
-                          />
-                        ) : null;
-                      })}
-                    </Box>
-                  )}
-                >
-                  {genres.map((genre) => (
-                    <MenuItem key={genre.name} value={genre.name}>
-                      <Checkbox checked={filters.genre.includes(genre.name)} />
-                      <ListItemText primary={genre.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <FormControl fullWidth sx={{ maxWidth: 200 }}>
-                <InputLabel>Mood</InputLabel>
-                <Select
-                  label="Mood"
-                  name="mood"
-                  value={filters.mood}
-                  onChange={handleMoodChange}
-                >
-                  {moodOptions.map((mood) => (
-                    <MenuItem key={mood} value={mood}>
-                      {mood}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <FormControl fullWidth sx={{ maxWidth: 200 }}>
-                <InputLabel>Energy</InputLabel>
-                <Select
-                  label="Energy"
-                  name="energy"
-                  value={filters.energy}
-                  onChange={handleEnergyChange}
-                >
-                  {energyOptions.map((energy) => (
-                    <MenuItem key={energy} value={energy}>
-                      {energy}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-
-            <Button variant="contained" onClick={handleGetRecommendations}>
-              Get Recommendations
-            </Button>
-
+            <RecommendedSongSearch
+              filters={filters}
+              setFilters={setFilters}
+              genres={genres}
+              handleSearch={handleSearch}
+              moodOptions={moodOptions}
+              energyOptions={energyOptions}
+            />
             {loading ? (
               <CircularProgress />
             ) : (
-              <Box sx={{ position: "relative" }}>
-                {isAdmin && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleOpenDialog()}
-                    sx={{ position: "absolute", top: -50, right: 0 }}
-                  >
-                    Add Song
-                  </Button>
-                )}
-                <SongList
-                  songs={recommendedSongs}
-                  onEdit={handleOpenDialog}
-                  onDelete={handleDeleteSong}
-                  onAddToPlaylist={handleAddToPlaylistClick}
-                  isAdmin={isAdmin}
-                />
-              </Box>
+              <SongList
+                songs={recommendedSongs}
+                onEdit={handleOpenDialog}
+                onDelete={handleDeleteSong}
+                onAddToPlaylist={handleAddToPlaylistClick}
+                handleOpenDialog={handleOpenDialog}
+                isAdmin={isAdmin}
+              />
             )}
           </>
         )}
 
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
-          <DialogTitle>{editSong?.id ? "Edit Song" : "Add Song"}</DialogTitle>
-          <DialogContent>
-            <FormControl fullWidth sx={{ marginBottom: "2%", marginTop: "1%" }}>
-              <TextField
-                label="Title"
-                name="title"
-                fullWidth
-                value={editSong?.title || ""}
-                onChange={handleDialogInputChange}
-              />
-            </FormControl>
-            <FormControl fullWidth sx={{ marginBottom: "2%" }}>
-              <InputLabel>Artist</InputLabel>
-              <Select
-                label="artist"
-                name="artist"
-                value={editSong?.artist || ""}
-                onChange={handleDialogInputChange}
-              >
-                {artists.map((artist) => (
-                  <MenuItem key={artist.id} value={artist.name}>
-                    {artist.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth sx={{ marginBottom: 2 }}>
-              <InputLabel>Genres</InputLabel>
-              <Select
-                multiple
-                label="genres"
-                name="genres"
-                value={editSong?.genres || []}
-                onChange={handleDialogInputChange}
-                renderValue={(selected) => (
-                  <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-                    {(selected as string[]).map((value) => {
-                      const genre = genres.find((g) => g.name === value);
-                      return genre ? (
-                        <Chip
-                          key={genre.id}
-                          label={genre.name}
-                          sx={{ margin: 0.5 }}
-                        />
-                      ) : null;
-                    })}
-                  </Box>
-                )}
-              >
-                {genres.map((genre) => (
-                  <MenuItem key={genre.id} value={genre.name}>
-                    <Checkbox
-                      checked={editSong?.genres?.includes(genre.name) || false}
-                    />
-                    <ListItemText primary={genre.name} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth sx={{ marginBottom: 2 }}>
-              <InputLabel>Mood</InputLabel>
-              <Select
-                label="Mood"
-                name="mood"
-                value={editSong?.mood || ""}
-                onChange={handleDialogInputChange}
-              >
-                {moodOptions.map((mood) => (
-                  <MenuItem key={mood} value={mood.toUpperCase()}>
-                    {mood}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+        <SongDialog
+          open={openDialog}
+          song={editSong}
+          genres={genres}
+          artists={artists}
+          moodOptions={moodOptions}
+          energyOptions={energyOptions}
+          onClose={handleCloseDialog}
+          onChange={handleDialogInputChange}
+          onDateChange={handleDateChange}
+          onSave={handleSaveSong}
+        />
 
-            <FormControl fullWidth sx={{ marginBottom: 2 }}>
-              <InputLabel>Energy</InputLabel>
-              <Select
-                label="Energy"
-                name="energy"
-                value={editSong?.energy || ""}
-                onChange={handleDialogInputChange}
-              >
-                {energyOptions.map((energy) => (
-                  <MenuItem key={energy} value={energy.toUpperCase()}>
-                    {energy}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth sx={{ marginBottom: 2 }}>
-              <DatePicker
-                label="Release Date"
-                value={
-                  filters.releaseDate ? new Date(filters.releaseDate) : null
-                }
-                onChange={handleDateChange}
-                format="yyyy-dd-MM"
-              ></DatePicker>
-            </FormControl>
-
-            <TextField
-              label="Plays"
-              name="plays"
-              fullWidth
-              type="number"
-              value={editSong?.plays || ""}
-              onChange={handleDialogInputChange}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog} color="secondary">
-              Cancel
-            </Button>
-            <Button onClick={handleSaveSong} color="primary">
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <Dialog
+        <PlaylistDialog
           open={playlistDialogOpen}
+          playlists={playlists}
+          selectedPlaylist={selectedPlaylist}
           onClose={() => setPlaylistDialogOpen(false)}
-        >
-          <DialogTitle>Select a Playlist</DialogTitle>
-          <DialogContent>
-            <FormControl fullWidth sx={{ mt: 2 }}>
-              <InputLabel>Playlist</InputLabel>
-              <Select
-                label="Playlist"
-                value={selectedPlaylist}
-                onChange={(e) => setSelectedPlaylist(e.target.value)}
-              >
-                {playlists.map((playlist) => (
-                  <MenuItem key={playlist.id} value={playlist.id}>
-                    {playlist.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => setPlaylistDialogOpen(false)}
-              color="secondary"
-            >
-              Cancel
-            </Button>
-            <Button onClick={handleConfirmAddToPlaylist} color="primary">
-              Add Song
-            </Button>
-          </DialogActions>
-        </Dialog>
+          onChange={(e) => setSelectedPlaylist(e.target.value)}
+          onConfirm={handleConfirmAddToPlaylist}
+        />
       </Box>
     </Box>
   );

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,7 +30,14 @@ public class SongService {
         Specification<Song> specification = songSpecification.getSongSpecification(filters);
         List<Song> songs = songRepository.findAll(specification);
 
-        return mapper.songListToDTO(songs);
+        return songs.stream()
+                .map(song -> {
+                    SongDTO dto = mapper.songToDTO(song);
+                    dto.setMatchPercentage(songSpecification.calculateMatchPercentage(song, filters));
+                    return dto;
+                })
+                .sorted(Comparator.comparingInt(SongDTO::getMatchPercentage).reversed())
+                .collect(Collectors.toList());
     }
 
     public SongDTO getSongById(UUID id) {

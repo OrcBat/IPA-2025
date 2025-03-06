@@ -23,10 +23,10 @@ const Navbar: React.FC = () => {
         {user && (
           <Tabs value={location.pathname} textColor="inherit">
             <Tab
-              label="Dashboard"
+              label="Homepage"
               component={Link}
-              to="/dashboard"
-              value="/dashboard"
+              to="/homepage"
+              value="/homepage"
             />
             <Tab label="Songs" component={Link} to="/songs" value="/songs" />
             <Tab

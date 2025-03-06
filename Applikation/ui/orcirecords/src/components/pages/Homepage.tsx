@@ -1,18 +1,11 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Container,
-  Link,
-  Typography,
-} from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useNavigate } from "react-router-dom";
+import HomepageCard from "../atoms/HomepageCard";
 
-const Dashboard = () => {
+const Homepage = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -30,101 +23,33 @@ const Dashboard = () => {
         Welcome to the homepage, {auth.user.username}
       </Typography>
 
-      <Grid container spacing={1} mt={2}>
-        {/* Card 1: Songs Page */}
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card sx={{ width: "100%" }}>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                Songs Page
-              </Typography>
-              <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-                Find and Manage Songs
-              </Typography>
-              <CardActions>
-                <Link
-                  onClick={() => {
-                    navigate("/songs");
-                  }}
-                >
-                  <Button size="small">Go to Songs Page</Button>
-                </Link>
-              </CardActions>
-            </CardContent>
-          </Card>
-        </Grid>
+      <Grid container spacing={1} mt={5}>
+        <HomepageCard
+          title="Songs"
+          description="Find and Manage Songs"
+          nav="/songs"
+        />
 
-        {/* Card 2: Playlists Page */}
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card sx={{ width: "100%" }}>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                Playlists Page
-              </Typography>
-              <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-                Manage your Playlists
-              </Typography>
-              <CardActions>
-                <Link
-                  onClick={() => {
-                    navigate("/playlists");
-                  }}
-                >
-                  <Button size="small">Go to Playlists Page</Button>
-                </Link>
-              </CardActions>
-            </CardContent>
-          </Card>
-        </Grid>
+        <HomepageCard
+          title="Playlists"
+          description="Manage your Playlists"
+          nav="/playlists"
+        />
 
-        {/* Card 3: Artists Page */}
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                Artists Page
-              </Typography>
-              <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-                Find and Manage Artists
-              </Typography>
-              <CardActions>
-                <Link
-                  onClick={() => {
-                    navigate("/artists");
-                  }}
-                >
-                  <Button size="small">Go to Artists Page</Button>
-                </Link>
-              </CardActions>
-            </CardContent>
-          </Card>
-        </Grid>
+        <HomepageCard
+          title="Artists"
+          description="Find and Manage Artists"
+          nav="/artists"
+        />
 
-        {/* Card 4: Genres Page */}
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                Genres Page
-              </Typography>
-              <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-                Find and Manage Genres
-              </Typography>
-              <CardActions>
-                <Link
-                  onClick={() => {
-                    navigate("/genres");
-                  }}
-                >
-                  <Button size="small">Go to Genres Page</Button>
-                </Link>
-              </CardActions>
-            </CardContent>
-          </Card>
-        </Grid>
+        <HomepageCard
+          title="Genres"
+          description="Find and Manage Genres"
+          nav="/genres"
+        />
       </Grid>
     </Container>
   );
 };
 
-export default Dashboard;
+export default Homepage;

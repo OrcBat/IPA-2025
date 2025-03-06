@@ -1,6 +1,6 @@
 import React from "react";
-import PlaylistItem from "../molecules/PlaylistItem";
-import { Playlist } from "../../models/PlaylistModel";
+import PlaylistItem from "../../molecules/PlaylistItem";
+import { Playlist } from "../../../models/PlaylistModel";
 
 interface PlaylistListProps {
   playlists: Playlist[];

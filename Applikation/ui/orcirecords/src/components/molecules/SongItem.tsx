@@ -19,9 +19,21 @@ const SongItem: React.FC<SongItemProps> = ({
   onDelete,
   onAddToPlaylist,
 }) => {
+  let backgroundColor = "transparent";
+  if (song.matchPercentage > 0 && song.matchPercentage < 100) {
+    backgroundColor = "#fff9c4";
+  } else if (song.matchPercentage === 100) {
+    backgroundColor = "#d9fae2";
+  }
+
   return (
     <ListItem
-      sx={{ border: 1, borderColor: "lightGrey" }}
+      sx={{
+        border: 1,
+        marginBottom: 1,
+        borderColor: "lightGrey",
+        backgroundColor: backgroundColor,
+      }}
       secondaryAction={
         <>
           {onAddToPlaylist && (

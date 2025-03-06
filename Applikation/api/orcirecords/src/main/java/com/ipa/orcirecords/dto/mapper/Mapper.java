@@ -209,7 +209,7 @@ public class Mapper {
             playlistDTO.setId(playlist.getId().toString());
             playlistDTO.setName(playlist.getName());
             playlistDTO.setDescription(playlist.getDescription());
-            playlistDTO.setOwnerId(playlist.getUser().getId().toString());
+            playlistDTO.setOwnerName(playlist.getUser().getUsername());
             playlistDTO.setSongs(songListToDTO(playlist.getSongs()));
 
             playlistDTOS.add(playlistDTO);
@@ -223,7 +223,7 @@ public class Mapper {
         playlistDTO.setId(playlist.getId().toString());
         playlistDTO.setName(playlist.getName());
         playlistDTO.setDescription(playlist.getDescription());
-        playlistDTO.setOwnerId(playlist.getUser().getId().toString());
+        playlistDTO.setOwnerName(playlist.getUser().getUsername());
         playlistDTO.setSongs(songListToDTO(playlist.getSongs()));
 
         return playlistDTO;

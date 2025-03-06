@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import DashboardTemplate from "./components/templates/DashboardTemplate";
+import DashboardTemplate from "./components/templates/HomepageTemplate";
 import Songs from "./components/pages/Songs";
 import Playlists from "./components/pages/Playlists";
 import Login from "./components/pages/Login";
-import Dashboard from "./components/pages/Homepage";
+import Homepage from "./components/pages/Homepage";
 import Artists from "./components/pages/Artists";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { CssBaseline } from "@mui/material";
@@ -19,9 +19,8 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route element={<ProtectedRoute />}>
-            <Route path=""></Route>
             <Route path="/" element={<DashboardTemplate />}>
-              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="homepage" element={<Homepage />} />
               <Route path="songs" element={<Songs />} />
               <Route path="playlists" element={<Playlists />} />
               <Route path="artists" element={<Artists />} />

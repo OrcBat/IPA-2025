@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Container } from "@mui/material";
 import Navbar from "../organisms/Navbar";
 
-const DashboardTemplate: React.FC = () => {
+const HomepageTemplate: React.FC = () => {
   return (
     <>
       <Navbar />
@@ -14,4 +14,4 @@ const DashboardTemplate: React.FC = () => {
   );
 };
 
-export default DashboardTemplate;
+export default HomepageTemplate;

@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -42,6 +44,59 @@ public class SongSpecification {
         return specification;
     }
 
+    public int calculateMatchPercentage(Song song, Map<String, String> filters) {
+        int matchCount = 0;
+        int totalFilters = 0;
+
+        for (Map.Entry<String, String> entry : filters.entrySet()) {
+            totalFilters++;
+
+            String filterValue = entry.getValue().toLowerCase();
+
+            switch (entry.getKey()) {
+                case "title":
+                    if (song.getTitle().toLowerCase().contains(filterValue)) matchCount++;
+                    break;
+                case "releaseDate":
+                    if (song.getReleaseDate().toString().equalsIgnoreCase(filterValue)) matchCount++;
+                    break;
+                case "artist":
+                    if (song.getArtist().getName().toLowerCase().contains(filterValue)) matchCount++;
+                    break;
+                case "energy":
+                    if (song.getEnergy().toString().equalsIgnoreCase(filterValue)) matchCount++;
+                    break;
+                case "mood":
+                    if (song.getMood().toString().toLowerCase().contains(filterValue)) matchCount++;
+                    break;
+                case "plays":
+                    int playsValue = Integer.parseInt(filterValue);
+                    int range = (int) (playsValue * 0.5);
+
+                    if (song.getPlays() >= (playsValue - range) && song.getPlays() <= (playsValue + range)) {
+                        matchCount++;
+                    }
+                    break;
+                case "genre":
+                    List<String> songGenres = song.getGenres().stream()
+                            .map(g -> g.getName().toLowerCase())
+                            .toList();
+                    List<String> filterGenres = Arrays.stream(filterValue.split(","))
+                            .map(String::trim)
+                            .toList();
+
+                    if (songGenres.stream().anyMatch(filterGenres::contains)) {
+                        matchCount++;
+                    }
+                    break;
+
+            }
+        }
+
+        return totalFilters > 0 ? (matchCount * 100) / totalFilters : 0;
+    }
+
+
     private Specification<Song> containsTitle(String title) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + title.toLowerCase() + "%");
     }
@@ -64,7 +119,6 @@ public class SongSpecification {
             }
         };
     }
-
 
     private Specification<Song> containsMood(String mood) {
         return (root, query, criteriaBuilder) -> {

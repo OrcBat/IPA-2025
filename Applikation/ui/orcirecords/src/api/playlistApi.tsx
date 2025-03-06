@@ -11,11 +11,6 @@ export const getCurrentUserPlaylists = async (): Promise<Playlist[]> => {
   return response.data;
 };
 
-export const getPlaylistById = async (id: string): Promise<Playlist> => {
-  const response = await api.get(`/playlist/${id}`);
-  return response.data;
-};
-
 export const createPlaylist = async (playlist: {
   name: string;
   description: string;

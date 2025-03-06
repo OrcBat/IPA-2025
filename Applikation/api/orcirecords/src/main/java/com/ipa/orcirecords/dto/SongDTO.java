@@ -23,4 +23,5 @@ public class SongDTO {
     int plays;
     String artist;
     List<String> genres;
+    int matchPercentage;
 }
