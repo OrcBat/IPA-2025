@@ -55,9 +55,7 @@ public class ArtistService {
         Optional<Genre> genre = genreRepository.findByName(artist.getGenre());
 
         for (String songTitle : artist.getSongs()) {
-            if (songRepository.findSongByTitle(songTitle).isPresent()) {
-                songs.add(songRepository.findSongByTitle(songTitle).get());
-            }
+            songRepository.findSongByTitle(songTitle).ifPresent(songs::add);
         }
 
         if (existingArtist.isPresent()) {

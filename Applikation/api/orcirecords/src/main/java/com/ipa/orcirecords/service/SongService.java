@@ -49,11 +49,11 @@ public class SongService {
         }
     }
 
-    public Song saveSong(SongDTO songDTO) {
-        return songRepository.save(mapper.songFromDTO(songDTO));
+    public void saveSong(SongDTO songDTO) {
+        songRepository.save(mapper.songFromDTO(songDTO));
     }
 
-    public Song updateSong(SongDTO songDTO) {
+    public void updateSong(SongDTO songDTO) {
         Song song = mapper.songFromDTO(songDTO);
         Optional<Song> existingSong = songRepository.findById(UUID.fromString(songDTO.getId()));
         if (existingSong.isPresent()) {
@@ -64,10 +64,9 @@ public class SongService {
             existingSong.get().setArtist(song.getArtist());
             existingSong.get().setGenres(song.getGenres());
             existingSong.get().setPlays(song.getPlays());
-            return songRepository.save(existingSong.get());
+            songRepository.save(existingSong.get());
         } else {
             log.warn("Song with id {} not found", songDTO.getId());
-            return null;
         }
     }
 

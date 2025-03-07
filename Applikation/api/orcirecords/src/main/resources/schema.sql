@@ -30,7 +30,7 @@ CREATE TABLE song
     release_date DATE         NOT NULL,
     energy       VARCHAR(30)  NOT NULL,
     mood         VARCHAR(30)  NOT NULL,
-    plays        INT          NOT NULL,
+    plays        BIGINT       NOT NULL,
     artist_id    UUID         NOT NULL,
     CONSTRAINT fk_artist FOREIGN KEY (artist_id) REFERENCES artist (id) ON DELETE NO ACTION
 );
