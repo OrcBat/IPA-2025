@@ -74,7 +74,7 @@ const GeneralSongSearch: React.FC<GeneralSongSearchProps> = ({
           type="number"
         />
       </Box>
-      <Button variant="contained" onClick={() => handleSearch(false)}>
+      <Button variant="contained" onClick={() => handleSearch(false)} data-testid="search-button">
         Search
       </Button>
     </>

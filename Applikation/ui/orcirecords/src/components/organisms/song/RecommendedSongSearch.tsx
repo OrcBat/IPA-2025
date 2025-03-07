@@ -75,6 +75,7 @@ const RecommendedSongSearch: React.FC<RecommendedSongSearchProps> = ({
                 ))}
               </Box>
             )}
+            data-testid="select-genre"
           >
             {genres.map((genre) => (
               <MenuItem key={genre.name} value={genre.name}>
@@ -92,6 +93,7 @@ const RecommendedSongSearch: React.FC<RecommendedSongSearchProps> = ({
             name="mood"
             value={filters.mood}
             onChange={handleMoodChange}
+            data-testid="select-mood"
           >
             {moodOptions.map((mood) => (
               <MenuItem key={mood} value={mood}>
@@ -108,6 +110,7 @@ const RecommendedSongSearch: React.FC<RecommendedSongSearchProps> = ({
             name="energy"
             value={filters.energy}
             onChange={handleEnergyChange}
+            data-testid="select-energy"
           >
             {energyOptions.map((energy) => (
               <MenuItem key={energy} value={energy}>
@@ -118,7 +121,11 @@ const RecommendedSongSearch: React.FC<RecommendedSongSearchProps> = ({
         </FormControl>
       </Box>
 
-      <Button variant="contained" onClick={() => handleSearch(true)}>
+      <Button
+        variant="contained"
+        onClick={() => handleSearch(true)}
+        data-testid="get-recommendations-button"
+      >
         Get Recommendations
       </Button>
     </>

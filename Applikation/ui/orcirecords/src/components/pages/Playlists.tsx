@@ -87,6 +87,7 @@ const Playlists = () => {
             onClick={() => setOpenDialog(true)}
             variant="contained"
             sx={{ position: "absolute", top: -50, right: 0 }}
+            data-testid="add-playlist-button"
           >
             Add Playlist
           </Button>
@@ -111,6 +112,7 @@ const Playlists = () => {
               setEditPlaylist({ ...editPlaylist!, name: e.target.value })
             }
             sx={{ my: 1 }}
+            data-testid="input-playlist-name"
           />
           <TextField
             label="Description"
@@ -121,13 +123,14 @@ const Playlists = () => {
               setEditPlaylist({ ...editPlaylist!, description: e.target.value })
             }
             sx={{ my: 1 }}
+            data-testid="input-playlist-description"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleSavePlaylist} color="primary">
+          <Button onClick={handleSavePlaylist} color="primary" data-testid="save-playlist-button">
             Save
           </Button>
         </DialogActions>

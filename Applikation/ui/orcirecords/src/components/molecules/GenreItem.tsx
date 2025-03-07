@@ -23,7 +23,10 @@ interface GenreItemProps {
 const GenreItem: React.FC<GenreItemProps> = ({ genre, onEdit, onDelete }) => {
   return (
     <Accordion>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        data-testid="genre-accordion"
+      >
         <ListItemText primary={genre.name} />
       </AccordionSummary>
       <AccordionDetails>
@@ -43,12 +46,20 @@ const GenreItem: React.FC<GenreItemProps> = ({ genre, onEdit, onDelete }) => {
         </List>
         <div style={{ display: "flex", gap: "10px", marginTop: "5px" }}>
           {onEdit && (
-            <IconButton onClick={() => onEdit(genre)} color="primary">
+            <IconButton
+              onClick={() => onEdit(genre)}
+              color="primary"
+              data-testid="edit-genre"
+            >
               <EditIcon />
             </IconButton>
           )}
           {onDelete && (
-            <IconButton onClick={() => onDelete(genre.id)} color="secondary">
+            <IconButton
+              onClick={() => onDelete(genre.id)}
+              color="secondary"
+              data-testid="delete-genre"
+            >
               <DeleteIcon />
             </IconButton>
           )}

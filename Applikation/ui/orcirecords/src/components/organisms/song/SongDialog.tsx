@@ -60,6 +60,7 @@ const SongDialog: React.FC<SongDialogProps> = ({
             fullWidth
             value={song?.title || ""}
             onChange={onChange}
+            data-testid="input-artist"
           />
         </FormControl>
 
@@ -168,7 +169,7 @@ const SongDialog: React.FC<SongDialogProps> = ({
         <Button onClick={onClose} color="secondary">
           Cancel
         </Button>
-        <Button onClick={onSave} color="primary">
+        <Button onClick={onSave} color="primary" data-testid="save-song-button">
           Save
         </Button>
       </DialogActions>

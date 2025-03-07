@@ -140,6 +140,7 @@ const Artists = () => {
                   prev ? { ...prev, genre: e.target.value } : null
                 )
               }
+              data-testid="select-artist-genre"
             >
               {Array.isArray(genres) && genres.length > 0 ? (
                 genres.map((genre) => (

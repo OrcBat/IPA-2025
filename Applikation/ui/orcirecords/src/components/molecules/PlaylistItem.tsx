@@ -32,10 +32,18 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
   const { user } = useAuth();
 
   return (
-    <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
+    <Accordion
+      expanded={expanded}
+      onChange={() => setExpanded(!expanded)}
+      data-testid="playlist-accordion"
+    >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <ListItemText primary={playlist.name} />
-        <IconButton onClick={() => onEdit(playlist)} sx={{ ml: "auto" }}>
+        <IconButton
+          onClick={() => onEdit(playlist)}
+          sx={{ ml: "auto" }}
+          data-testid="edit-playlist-button"
+        >
           <EditIcon />
         </IconButton>
         <IconButton onClick={() => onDelete(playlist.id)}>
@@ -62,6 +70,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
                 secondaryAction={
                   <IconButton
                     onClick={() => onRemoveSong(playlist.id, song.id)}
+                    data-testid="delete-playlist-button"
                   >
                     <DeleteIcon />
                   </IconButton>

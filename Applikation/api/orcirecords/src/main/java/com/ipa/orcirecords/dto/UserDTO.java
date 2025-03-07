@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    private String username;
-    private List<String> roles;
+    String username;
+    List<String> roles;
 }

@@ -27,7 +27,7 @@ const ArtistItem: React.FC<ArtistItemProps> = ({
 }) => {
   return (
     <Accordion>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} data-testid="artist-accordion">
         <ListItemText primary={artist.name} />
       </AccordionSummary>
       <AccordionDetails>
@@ -59,12 +59,12 @@ const ArtistItem: React.FC<ArtistItemProps> = ({
         </List>
         <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
           {onEdit && (
-            <IconButton onClick={() => onEdit(artist)} color="primary">
+            <IconButton onClick={() => onEdit(artist)} color="primary" data-testid="edit-artist">
               <EditIcon />
             </IconButton>
           )}
           {onDelete && (
-            <IconButton onClick={() => onDelete(artist.id)} color="secondary">
+            <IconButton onClick={() => onDelete(artist.id)} color="secondary" data-testid="delete-artist">
               <DeleteIcon />
             </IconButton>
           )}
