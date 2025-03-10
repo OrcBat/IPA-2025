@@ -144,7 +144,7 @@ const Songs = () => {
 
   const handleDateChange = (newDate: Date | null) => {
     newDate!.setUTCDate(newDate!.getUTCDate());
-    let formattedDate = newDate ? newDate.toISOString() : "";
+    let formattedDate = newDate ? newDate.toISOString().split("T")[0] : "";
 
     if (editSong) {
       setEditSong({

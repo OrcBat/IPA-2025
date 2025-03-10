@@ -46,7 +46,10 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
         >
           <EditIcon />
         </IconButton>
-        <IconButton onClick={() => onDelete(playlist.id)}>
+        <IconButton
+          onClick={() => onDelete(playlist.id)}
+          data-testid="delete-playlist-button"
+        >
           <DeleteIcon />
         </IconButton>
       </AccordionSummary>
@@ -70,7 +73,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
                 secondaryAction={
                   <IconButton
                     onClick={() => onRemoveSong(playlist.id, song.id)}
-                    data-testid="delete-playlist-button"
+                    data-testid="delete-song-button"
                   >
                     <DeleteIcon />
                   </IconButton>

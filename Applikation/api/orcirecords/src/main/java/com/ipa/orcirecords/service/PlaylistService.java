@@ -70,7 +70,6 @@ public class PlaylistService {
                 log.warn("Not authorized to delete this playlist");
             }
         }
-
     }
 
     public Playlist updatePlaylist(PlaylistInfoDTO playlist, Optional<User> currentUser) {

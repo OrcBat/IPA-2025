@@ -19,7 +19,7 @@ describe("Playlists Page Tests", () => {
     cy.get("div").should("not.contain", "CircularProgress");
   });
 
-  it("opens the add playlist dialog", () => {
+  it("adds a new playlist", () => {
     cy.get('[data-testid="add-playlist-button"]')
       .contains("Add Playlist")
       .click();
@@ -33,22 +33,34 @@ describe("Playlists Page Tests", () => {
 
     cy.get('[data-testid="save-playlist-button"]').contains("Save").click();
 
-    // Ensure the playlist appears in the list
     cy.contains("My New Playlist").should("be.visible");
   });
 
   it("edits an existing playlist", () => {
     cy.get('[data-testid="edit-playlist-button"]').first().click();
 
-    // Ensure the dialog opens with the correct title
     cy.contains("Edit Playlist").should("be.visible");
 
-    // Update the playlist name and description
     cy.get('[data-testid="input-playlist-name"]').type("Updated");
     cy.get('[data-testid="input-playlist-description"]').type("Updated");
 
     cy.get('[data-testid="save-playlist-button"]').contains("Save").click();
 
     cy.contains("Updated").should("be.visible");
+  });
+
+  it("deletes an existing playlist", () => {
+    cy.get('[data-testid="delete-playlist-button"]').first().click();
+
+    cy.on("window:confirm", () => true);
+
+    cy.contains("Updated").should("not.exist");
+  });
+
+  it("removes a song from a playlist", () => {
+    cy.get('[data-testid="playlist-accordion"]').first().click();
+    cy.get('[data-testid="delete-song-button"]').first().click({ force: true });
+
+    cy.contains("15 Step").should("not.exist");
   });
 });

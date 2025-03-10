@@ -1,4 +1,4 @@
-describe("Artists Page Tests", () => {
+describe("Genres Page Tests", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/login");
 

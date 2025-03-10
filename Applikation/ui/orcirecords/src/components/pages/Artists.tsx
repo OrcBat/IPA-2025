@@ -13,7 +13,6 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  Chip,
 } from "@mui/material";
 import {
   getArtists,
